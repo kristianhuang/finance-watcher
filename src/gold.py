@@ -27,12 +27,18 @@ def formatTime(timeData):
     return time.strftime("%Y-%m-%d", res)
 
 
-class Gold(object):
+class GoldFutures(object):
     baseUrl = "https://vip.stock.finance.sina.com.cn/"
     logPath = ""
     domTree = None
 
     def history(self, startTime, endTime):
+        """ get gold price history list.
+
+        :param startTime: Start time, e.g. 2020-02-01.
+        :param endTime: End time, e.g. 2022-02-01.
+        :return: history list
+        """
         startTime = formatTime(startTime)
         endTime = formatTime(endTime)
         historyList = []
@@ -42,9 +48,26 @@ class Gold(object):
         for p in range(page):
             url = self.baseUrl + f"q/view/vFutures_History.php?page={p + 1}&breed=AU0&start={startTime}&end={endTime}&jys=shfe&pz=AU&hy=AU0&type=inner&name="
             self.__createDomTree(self.__fetchData(url))
-            self.__generateHistoryData(historyList)
+            self.__generateHistoryList(historyList)
 
         return historyList
+
+    # TODO In development
+    def info(self, code="AU0"):
+        """获取指定代码的黄金详情
+
+        :param code:
+        :return:
+        """
+        try:
+            if len(code) <= 0:
+                raise ValueError("请输入正确的时间范围,例如 2022-02-01")
+
+            url = "https://vip.stock.finance.sina.com.cn/mkt/#np_gold"
+            self.__createDomTree(self.__fetchData(url))
+            self.__generateInfo()
+        except ValueError:
+            print(ValueError)
 
     def __genericHeader(self):
         headers = {
@@ -85,7 +108,7 @@ class Gold(object):
 
         return int(pattern[1])
 
-    def __generateHistoryData(self, historyList):
+    def __generateHistoryList(self, historyList):
         """查找并生成数据列表
 
         :return: 数据列表
@@ -104,6 +127,10 @@ class Gold(object):
 
             historyList.append(itemData)
 
+    def __generateInfo(self):
+        table = self.domTree.find_all(id="list_nav2")
+        print(table)
 
-g = Gold()
-g.history("2021-02-01", "2022-03-02")
+
+g = GoldFutures()
+g.info()
