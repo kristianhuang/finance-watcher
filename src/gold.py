@@ -11,6 +11,8 @@ import time
 import requests
 from bs4 import BeautifulSoup
 
+from excel import Excel
+
 
 def formatTime(timeData):
     """格式化时间字符串
@@ -133,4 +135,8 @@ class GoldFutures(object):
 
 
 g = GoldFutures()
-g.info()
+historyList = g.history("2020-03-01", "2022-03-21")
+
+header = ["date", "closingPrice", "openingPrice", "highestPrice", "lowestPrice", "volume"]
+e = Excel(header, historyList, "历史金价", "./glod-history-list.xlsx")
+e.create()
