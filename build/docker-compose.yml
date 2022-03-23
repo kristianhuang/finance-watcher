@@ -1,0 +1,13 @@
+version: 3.7
+
+services:
+  crawler:
+    build:
+      context: ../
+      dockerfile: ./build/Dockerfile
+    image: crawler
+    volumes:
+      - "crawler:/app/example"
+volumes:
+  crawler:
+    name: crawler
