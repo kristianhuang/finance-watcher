@@ -8,22 +8,23 @@
 import sys
 
 sys.path.append("../src")
-from matplotlib import pyplot as plt
 
+from matplotlib import pyplot as plt
+from src.futures import Futures
 import pandas as pd
 
 
 def example():
     # Fetch data, then generate excel.
-    # f = Futures("SC0")
-    # historyList = f.history("2010-01-01", "2022-03-23")
-    # df = pd.DataFrame(historyList)
-    # df.to_excel("./SC0.xlsx", sheet_name='Sheet1', engine='xlsxwriter')
-    #
-    # f = Futures("AU0")
-    # historyList = f.history("2010-01-01", "2022-03-23")
-    # df = pd.DataFrame(historyList)
-    # df.to_excel("./AU0.xlsx", sheet_name='Sheet1', engine='xlsxwriter')
+    f = Futures("SC0")
+    historyList = f.history("2010-01-01", "2022-03-23")
+    df = pd.DataFrame(historyList)
+    df.to_excel("./SC0.xlsx", sheet_name='Sheet1', engine='xlsxwriter')
+
+    f = Futures("AU0")
+    historyList = f.history("2010-01-01", "2022-03-23")
+    df = pd.DataFrame(historyList)
+    df.to_excel("./AU0.xlsx", sheet_name='Sheet1', engine='xlsxwriter')
 
     # Reade data，then generate line chart.
     au0Df = pd.read_excel("./AU0.xlsx")
